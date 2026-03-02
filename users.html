@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="images/familyeco_logo.png" type="image/png" />
+    <link rel="stylesheet" href="css/fml_style.css" />
+    <title>Users</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"
+      rel="stylesheet"
+    />
+    <link href="css/dsk_css.css" rel="stylesheet" />
+  </head>
+  <body
+    onload="checkSession(); menu_dsk_load(); getAllUsersDataIntoTable();"
+    
+  >
+    <div class="card mb-4">
+      <div class="card-header">Create/Update User</div>
+      <div class="card-body">
+        <div class="row g-2">
+          <div class="col-md-2">
+            <label class="form-label">Id</label>
+            <input type="text" id="userId" class="form-control" value="New" disabled />
+          </div>
+          <div class="col-md-2">
+            <label class="form-label">Username</label>
+            <input type="text" id="username" class="form-control" />
+          </div>
+          <div class="col-md-2">
+            <label class="form-label">Password</label>
+            <input type="password" id="pass" class="form-control" />
+          </div>
+          <div class="col-md-2">
+            <label class="form-label">Active</label>
+            <div class="form-check form-switch mt-2">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="isActiveSwitch"
+              />
+              <label class="form-check-label">Active / Not</label>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <label class="form-label">Admin</label>
+            <div class="form-check form-switch mt-2">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="isAdminSwitch"
+              />
+              <label class="form-check-label">Admin / Not</label>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <label class="form-label">Stats</label>
+            <div class="form-check form-switch mt-2">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="seeStatsSwitch"
+              />
+              <label class="form-check-label">See Stats / Not</label>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Name</label>
+            <input type="text" id="name" class="form-control" />
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Surname</label>
+            <input type="text" id="surname" class="form-control" />
+          </div>
+          <div class="col-md-2 d-grid align-items-end">
+            <button id="clearBtn" onclick="clearUser()" class="btn btn-primary">
+              Clear
+            </button>
+          </div>
+          <div class="col-md-2 d-grid align-items-end">
+            <button
+              id="saveUpdateBtn"
+              onclick="saveUpdateUser()"
+              class="btn btn-success"
+            >
+              Save
+            </button>
+          </div>
+          <div class="col-md-2 d-grid align-items-end">
+            <button
+              id="deleteBtn"
+              onclick="initializeDeleteUserDialog()"
+              class="btn btn-danger"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">Users</div>
+      <div class="card-body">
+        <table id="usersTable" class="display" style="width: 100%">
+          <thead>
+            <tr>
+              <th style="display: none">Id</th>
+              <th>username</th>
+              <th>Name</th>
+              <th>Surname</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="modal fade" id="user_delete_modal">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content tx-size-sm">
+          <div class="modal-header pd-x-20">
+            <h6
+              class="tx-14 mg-b-0 tx-uppercase tx-inverse tx-bold"
+              id="user_delete_error_message"
+            >
+              ΕΠΙΒΕΒΑΙΩΣΗ ΔΙΑΓΡΑΦΗΣ
+            </h6>
+          </div>
+          <div class="modal-body pd-10">
+            <h5 id="user_id" hidden></h5>
+            <h5 id="user_details"></h5>
+          </div>
+          <div class="modal-footer">
+            <button
+              id="btn_user_delete"
+              onclick="deleteUser()"
+              data-dismiss="modal"
+              type="button"
+              class="btn btn-danger tx-size-xs"
+            >
+              Διαγραφή
+            </button>
+            <button
+              type="button"
+              onclick="hide_user_delete_modal()"
+              class="btn btn-secondary tx-size-xs"
+              data-dismiss="modal"
+            >
+              Ακύρωση
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="jsLib/index.js"></script>
+    <script src="jsLib/creds.js"></script>
+    <script src="jsLib/menu.js"></script>
+    <script src="jsLib/users.js"></script>
+    <script>
+      $(document).ready(function () {
+        $("#usersTable").DataTable({
+          responsive: true,
+          stateSave: true,
+          dom: "Bfrtip",
+          buttons: ["copy", "excel", "pdf", "print"],
+          columnDefs: [{ visible: false, targets: 0 }],
+          language: {
+            searchPlaceholder: "Search...",
+            sSearch: "",
+            lengthMenu: "_MENU_ items/page",
+          },
+        });
+      });
+    </script>
+  </body>
+</html>

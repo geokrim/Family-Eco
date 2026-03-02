@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="css/style1.css" rel="stylesheet" />
+    <link rel="icon" href="images/familyeco_logo.png" type="image/png" />
+    <title>Login Page</title>
+  </head>
+  <body>
+    <div class="header">
+      <img
+        src="images/familyeco_logo.png"
+        alt="FamilyEco Logo"
+        height="100"
+        width="125"
+      />
+    </div>
+
+    <div class="container">
+      <div class="login-box">
+        <h1>Login</h1>
+        <form onsubmit="checkCredentials(); return false;">
+          <label for="familyId">Family ID</label>
+          <input type="text" id="familyId" required />
+          <label for="username">User</label>
+          <input type="text" id="username" required />
+          <label for="password">Password</label>
+          <input type="password" id="password" required />
+          <div class="button">
+            <button type="submit">Login</button>
+          </div>
+        </form>
+      </div>
+      <div class="footer-box">
+        <p class="app-version">Version: 3.1.2</p>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="jsLib/index.js"></script>
+  </body>
+</html>

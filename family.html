@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="images/familyeco_logo.png" type="image/png" />
+    <link href="css/fml_style.css" rel="stylesheet" />
+    <link href="css/dsk_css.css" rel="stylesheet" />
+    <title>Family</title>
+  </head>
+  <body onload="checkSession(); menu_dsk_load(); getFamilyData();">
+    <div class="container">
+      <div class="card">
+        <div class="card-header">Family Settings</div>
+        <div class="card-body">
+          <div class="form-group">
+            <label>Id</label>
+            <input type="text" id="id" value="New" readonly />
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <input
+              type="text"
+              id="descr"
+              placeholder="Enter family description"
+            />
+          </div>
+          <div class="form-group">
+            <label>Family ID (Reference)</label>
+            <input type="text" id="familyId" readonly />
+          </div>
+          <div class="form-group">
+            <button class="save-btn" onclick="updateFamily()">SAVE</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="jsLib/index.js"></script>
+    <script src="jsLib/creds.js"></script>
+    <script src="jsLib/menu.js"></script>
+    <script src="jsLib/family.js"></script>
+  </body>
+</html>

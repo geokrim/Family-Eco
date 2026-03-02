@@ -1,0 +1,20 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# System/Server folders
+.cagefs/
+.cl.selector/
+.vscode/
+
+# Project metadata/Prompts
+prompts/
+
+# Deprecated/Old code
+dev-deprecated/
+old/
+**/backup/
+**/depricated/
+
+# Local configuration
+*.log

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="images/familyeco_logo.png" type="image/png" />
+    <title>Transactions</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css"
+      rel="stylesheet"
+    />
+    <link href="css/dsk_css.css" rel="stylesheet" />
+  </head>
+  <body
+    onload="checkSession(); menu_dsk_load(); load_defaults(); load_defaults_pedia_anazitisis();"
+    
+  >
+    <div class="top-bar mb-4" id="menuDesk"></div>
+    <div class="card mb-4">
+      <div class="card-header">Καταχώρηση Νέας Εγγραφής</div>
+      <div class="card-body">
+        <div class="row g-3">
+          <div class="col-md-3">
+            <label class="form-label">Ημερομηνία</label>
+            <input type="date" class="form-control" id="dt" />
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Είδος</label>
+            <div class="form-check form-switch">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                role="switch"
+                id="incomeSwitch"
+                checked
+                onchange="incomeSwichChange()"
+              />
+              <label class="form-check-label" for="incomeSwitch"
+                >Έσοδο / Έξοδο</label
+              >
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Id (Εγγραφής)</label>
+            <input type="text" class="form-control" id="trans_id" value="New" disabled />
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Κατηγορία 1</label>
+            <select class="form-select" id="categ1" onchange="categ1Change()"></select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Κατηγορία 2</label>
+            <select class="form-select" id="categ2" onchange="categ2Change()"></select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Κατηγορία 3</label>
+            <select class="form-select" id="categ3"></select>
+          </div>
+          <div class="col-md-9">
+            <label class="form-label">Περιγραφή</label>
+            <input type="text" class="form-control" id="trans_descr" />
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Ποσό (€)</label>
+            <input type="text" class="form-control" id="trans_amount" />
+          </div>
+          <div class="col-12 d-grid gap-2 d-md-flex justify-content-md-end">
+            <button class="btn btn-success" onclick="saveUpdateTrans()">
+              Καταχώρηση / Ανανέωση
+            </button>
+            <button
+              class="btn btn-danger"
+              onclick="initializeDeleteTransDialog()"
+            >
+              Διαγραφή
+            </button>
+            <button class="btn btn-secondary" onclick="load_defaults()">
+              Καθαρισμός
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card mb-4">
+      <div class="card-header">Αναζήτηση Εγγραφών</div>
+      <div class="card-body">
+        <div class="row g-3 align-items-end">
+          <div class="col-md-4">
+            <label class="form-label">Από Ημερομηνία</label>
+            <input type="date" class="form-control" id="dt_from" />
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Έως Ημερομηνία</label>
+            <input type="date" class="form-control" id="dt_to" />
+          </div>
+          <div class="col-md-4 d-grid">
+            <button
+              class="btn btn-success"
+              onclick="getAllTransDataIntoTable()"
+            >
+              Εμφάνιση Εγγραφών
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card mb-4">
+      <div class="card-header">Σύνολα</div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-4">
+            <span id="total_insome"><strong>Total Income:</strong> €0</span>
+          </div>
+          <div class="col-md-4">
+            <span id="total_expenses"><strong>Total Expenses:</strong> €0</span>
+          </div>
+          <div class="col-md-4">
+            <span id="total_balance"><strong>Balance:</strong> €0</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">Records</div>
+      <div class="card-body">
+        <table id="transactionsTable" class="display" style="width: 100%">
+          <thead>
+            <tr>
+              <th style="display: none">Id</th>
+              <th>Date</th>
+              <th>Description</th>
+              <th>Categories</th>
+              <th>Amount</th>
+              <th>User</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+    <div
+      class="modal fade"
+      id="trans_delete_modal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="modalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel">Confirmation</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p>Do you want to delete the transaction with Id:</p>
+            <p id="current_trans_id" class="fw-bold"></p>
+            <p id="current_trans_details" class="fw-bold"></p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-danger"
+              onclick="delete_trans()"
+              data-bs-dismiss="modal"
+            >
+              Διαγραφή
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Ακύρωση
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+    <script src="jsLib/moment.js"></script>
+    <script src="jsLib/index.js"></script>
+    <script src="jsLib/creds.js"></script>
+    <script src="jsLib/menu.js"></script>
+    <script src="jsLib/misc.js"></script>
+    <script src="jsLib/trans.js"></script>
+  </body>
+</html>

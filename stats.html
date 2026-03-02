@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="images/familyeco_logo.png" type="image/png" />
+    <title>Stats</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css"
+      rel="stylesheet"
+    />
+    <link href="css/dsk_css.css" rel="stylesheet" />
+  </head>
+  <body onload="checkSession(); menu_dsk_load();" >
+    <div class="top-bar mb-4" id="menuDesk"></div>
+    <div class="card mb-4">
+      <div class="card-header">Filter Period</div>
+      <div class="card-body">
+        <div class="row g-3 align-items-end">
+          <div class="col-md-4">
+            <label class="form-label">From Date</label>
+            <input type="date" class="form-control" id="fromDate" />
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">To Date</label>
+            <input type="date" class="form-control" id="toDate" />
+          </div>
+          <div class="col-md-4 d-grid">
+            <button class="btn btn-success" onclick="loadStats()">
+              Show Stats
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card mb-4">
+      <div class="card-header">Statistics Breakdown (Category 1)</div>
+      <div class="card-body">
+        <table id="statsTable" class="display" style="width: 100%">
+          <thead>
+            <tr>
+              <th>Category 1</th>
+              <th>Total Amount</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">Statistics Chart</div>
+      <div class="card-body">
+        <canvas id="statsChart" style="max-height: 400px"></canvas>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+    <script src="jsLib/moment.js"></script>
+    <script src="jsLib/index.js"></script>
+    <script src="jsLib/creds.js"></script>
+    <script src="jsLib/menu.js"></script>
+    <script src="jsLib/misc.js"></script>
+    <script src="jsLib/stats.js"></script>
+  </body>
+</html>
