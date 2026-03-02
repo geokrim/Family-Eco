@@ -16,5 +16,10 @@ old/
 **/backup/
 **/depricated/
 
+# Sensitive Files (Not for GitHub)
+jsLib/creds.js
+jsLib/index.js
+jsLib/creds_session.js
+
 # Local configuration
 *.log
